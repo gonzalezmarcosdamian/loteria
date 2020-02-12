@@ -1,0 +1,67 @@
+<html>
+<head>
+	<meta charset="utf8">
+	<title>Formulario HTML para programa de LOTERIA</title>
+	<div class="container">
+		<h1>GENERADOR DE CARTONES, MODULO ORIGINALES</h1>
+		<h2>INGRESE DATOS:</h2>
+	</div>
+	
+	
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+</head>
+<body  style="background-color:rgb(191, 206, 209);"> 
+<hr>
+<!--FORMULARIO-->
+<form action="original.php" method="post">
+
+<div class="container">
+		<p>CANTIDAD DE CARTONES A GENERAR:
+			<input type="text" name="cantidaddecartones" />
+		
+		COSTO DE CARTON:
+			<input type="text" name="costocarton" />
+	
+		<hr> 
+		ORGANIZA:
+			<input type="text" name="Organiza" />
+		FECHA:
+			<input type="text" name="Fecha" />
+		HORA:
+			<input type="text" name="Hora" />
+		LUGAR:
+			<input type="text" name="Lugar" />
+		</p>
+		<hr>
+		<p>PREMIO QUINTINA PRIMERA RONDA:
+			<input type="text" name="liniauno"/><br>
+		PREMIO CARTON LLENO PRIMERA RONDA:
+			<input type="text" name="llenouno" />
+		
+
+		<p>PREMIO QUINTINA SEGUNDA RONDA:
+			<input type="text" name="liniados" /><br>
+		PREMIO CARTON LLENO SEGUNDA RONDA:
+			<input type="text" name="llenodos" /></p>
+		<hr>
+
+		<p>PREMIO QUINTINA TERCERA RONDA:
+			<input type="text" name="liniatres" /><br>
+		PREMIO CARTON LLENO TERCERA RONDA:
+			<input type="text" name="llenotres" /></p>
+		
+
+		<p>PREMIO QUINTINA CUARTA RONDA:
+			<input type="text" name="liniacuatro" /><br>
+		PREMIO CARTON LLENO CUARTA RONDA:
+			<input type="text" name="llenocuatro" /></p>
+		<hr>
+		<input type="submit" class="btn btn-primary btn-lg active" role="button" aria-pressed="true" value="Enviar" />
+		<a href="index.html" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">Menu</a>
+</div>
+</form>
+
+
+</body>
+</html>
