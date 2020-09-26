@@ -15,15 +15,15 @@ try{
             $this->SetFont('');
             
             $Organiza = $_POST['Organiza'];
-            $Lugar = $_POST['Lugar'];
             $Fecha = $_POST['Fecha'];
             $Hora = $_POST['Hora'];
-            $costo=$_POST['costocarton'];
+            $costo=$_POST['costocarton'];            
+            
             //Varibles a ingresar
-            $org=$Organiza;
-            $lug=$Lugar;
+            $org=$Organiza;          
             $fe=$Fecha;
             $ho=$Hora;
+           
             // Move to the right
             //$this->Cell(80);
             // Framed title
@@ -31,9 +31,7 @@ try{
             $this->Ln(5);
             $this->Cell(10,10,'Fecha: '.$fe.'   Hora: '.$ho.' hs',0,0,'L');
             $this->Ln(5);
-            $this->Cell(10,10,'Lugar: '.$lug,0,0,'L');
-            $this->Ln(5);
-            $this->Cell(10,10,'Costo del carton: $ '.$costo,0,0,'L');
+            $this->Cell(10,10,'Costo del carton: $'.$costo,0,0,'L');
             // Line break
             $this->Ln(10);
             }
@@ -87,14 +85,29 @@ try{
             $this->Cell(5,5,'CARTON LLENO: '.$llenocuatro,0,0,'L');  
             $this->Ln(6);  
 
-            $this->SetFont('Arial','B',11);    
+            $this->SetFont('Arial','B',11);
+            $contacto=$_POST['contacto'];
+            $radio=$_POST['radio'];
+            $con=$contacto;
+            $rad=$radio;
 
+            $this->Cell(5,5,'Comunicarse al : '.$con,0,0,'L');
+            $this->Ln(5);
+            $this->Cell(5,5,'Por la : '.$rad,0,0,'L');
+            $this->Ln(3);
+
+           /*  $this->Cell(5,5,'Contacto : 2916430719 / 2931451697',0,0,'L');
+            $this->Ln(5);
+            $this->Cell(5,5,'Transmision: RADIO ESCUELA FM 100.3',0,0,'L');
+            $this->Ln(3);  */
+
+       /*      $this->SetFont('');
             $this->Cell(5,5,'NOTA: Se entrega el premio no su valor',0,0,'L');
             $this->Ln(3);
             $this->Cell(5,5,'no somos responsables por perdida de carton.',0,0,'L');
             $this->Ln(5);
 
-            $this->Cell(45,7,'CUOTA 1 / CUOTA 2 / CUOTA 3',1,1,'L'); 
+            $this->Cell(45,7,'CUOTA 1 / CUOTA 2 / CUOTA 3',1,1,'L'); */
 
             //$this->Cell(15,5,'CUOTA 2',1,1,'L');
 
@@ -117,7 +130,7 @@ try{
 
         $lista_originales=generar_lista($cantidad_de_cartones);
 
-        imprimir_lista_txt($lista_originales);
+        //imprimir_lista_txt($lista_originales);
 
         imprimir_lista($cantidad_de_cartones,$ronda,$lista_originales, $f);
         
