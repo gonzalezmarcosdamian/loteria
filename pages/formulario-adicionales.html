@@ -1,47 +1,91 @@
 <html>
-<head>
-	<meta charset="utf8">
-	<title>Adicionales y sorpresa</title>
+  <head>
+    <meta charset="utf8" />
+    <title>Adicionales y sorpresa</title>
 
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body style="background-color: rgb(191, 206, 209)">
+    <hr />
+    <!--FORMULARIO-->
+    <div class="container">
+      <h1>Generador de cartones: Adicionales y sorpresas - V1</h1>
+      <h2>Ingrese datos:</h2>
+    </div>
 
-	
-	
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <div class="container">
+      <form action="../adicional_v1.php" method="post">
+        <div class="form-group">
+          <div class="row">
+            <div class="col">
+              <label for="cantidad-cartones">Tipo:</label>
+              <input
+                type="text"
+                class="form-control"
+                name="tipo"
+                placeholder="Ejemplo: Adicional 1ra Ronda"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <label for="cantidad-cartones"
+                >Cantidad de cartones a generar:</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                name="cantidad"
+                placeholder="Ejemplo: 100"
+              />
+            </div>
+            <div class="col">
+              <label for="costo-cartones">Costo de cada carton:</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Ejemplo: 100 "
+                name="costo"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <label for="costo-cartones">Fecha:</label>
+              <input type="text" class="form-control" name="Fecha" />
+            </div>
+            <div class="col">
+              <label for="costo-cartones">Hora:</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Ejemplo: 9/12/2018 "
+                name="Hora"
+              />
+            </div>
+          </div>
+        </div>
 
-</head>
-<body style="background-color:rgb(191, 206, 209);">
-<hr>
-<!--FORMULARIO--> 
-<div class="container">
-	<h1>Generador de cartones: Adicionales y sorpresas - V1</h1>
-	<h2>Ingrese datos:</h2>
-</div>
-
-	<div class="container">
-
-			<form action="../adicional_v1.php" method="post">
-				
-				<h3>Tipo:</h3><br>
-				Ingrese tipo (ejemplo: adicional ronda 1) <input type="text" name="tipo" />
-				<hr>
-					<p>
-						COSTO:
-						<input type="text" name="costo" />	
-
-						CANTIDAD:
-						<input type="text" name="cantidad" />					
-						
-						FECHA:
-							<input type="text" name="Fecha" />
-						
-						HORA:
-						<input type="text" name="Hora" /><br>
-					</p>
-				<hr>	
-				<input type="submit" class="btn btn-primary btn-lg active" role="button" aria-pressed="true" value="Enviar" />
-				<a href="../index.html" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">Menu</a>
-	</form>
-	</div>
-
-</bodystyle="background-color:rgb(191, 206, 209);">
+        <input
+          type="submit"
+          class="btn btn-primary btn-lg active"
+          role="button"
+          aria-pressed="true"
+          value="Enviar"
+        />
+        <a
+          href="../index.html"
+          class="btn btn-secondary btn-lg active"
+          role="button"
+          aria-pressed="true"
+          >Menu</a
+        >
+      </form>
+    </div>
+  </body>
 </html>

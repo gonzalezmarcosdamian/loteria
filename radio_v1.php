@@ -95,23 +95,6 @@ try{
             $this->Ln(5);
             $this->Cell(5,5,'Por la : '.$rad,0,0,'L');
             $this->Ln(3);
-
-           /*  $this->Cell(5,5,'Contacto : 2916430719 / 2931451697',0,0,'L');
-            $this->Ln(5);
-            $this->Cell(5,5,'Transmision: RADIO ESCUELA FM 100.3',0,0,'L');
-            $this->Ln(3);  */
-
-       /*      $this->SetFont('');
-            $this->Cell(5,5,'NOTA: Se entrega el premio no su valor',0,0,'L');
-            $this->Ln(3);
-            $this->Cell(5,5,'no somos responsables por perdida de carton.',0,0,'L');
-            $this->Ln(5);
-
-            $this->Cell(45,7,'CUOTA 1 / CUOTA 2 / CUOTA 3',1,1,'L'); */
-
-            //$this->Cell(15,5,'CUOTA 2',1,1,'L');
-
-           // $this->Cell(15,5,'CUOTA 3',1,1,'L');
             
             //.$this->PageNo()
             }

@@ -55,8 +55,7 @@ try{
         $ronda=1; //RONDAS
 
         $lista_cartones_adicionales=generar_lista_adicionales($cantidad);
-
-        //deberia leer el archivo de texto generado
+       
 
         imprimir_lista_adicionales($cantidad,$ronda,$lista_cartones_adicionales,$f);
 

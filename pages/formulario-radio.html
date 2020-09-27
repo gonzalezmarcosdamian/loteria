@@ -1,73 +1,193 @@
 <html>
-<head>
-	<meta charset="utf8">
-	<title>Formulario HTML para programa de LOTERIA</title>
-	
-	
-	
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <head>
+    <meta charset="utf8" />
+    <title>Formulario HTML para programa de LOTERIA</title>
 
-</head>
-<body  style="background-color:rgb(191, 206, 209);"> 
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+  </head>
+  <body style="background-color: rgb(191, 206, 209)">
     <div class="container">
-		<h1>Generador de cartones para loteria Radial - V1</h1>
-		<h2>Ingrese Datos:</h2>
-	</div>
-<hr>
-<!--FORMULARIO-->
-<form action="../radio_v1.php" method="post">
+      <h1>Generador de cartones para loteria Radial - V1</h1>
+      <h2>Ingrese Datos:</h2>
+    </div>
+    <hr />
+    <!--FORMULARIO-->
+    <div class="container">
+      <form action="../radio_v1.php" method="post">
+        <div class="form-group">
+          <div class="row">
+            <div class="col">
+              <label for="cantidad-cartones"
+                >Cantidad de cartones a generar:</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                name="cantidaddecartones"
+                placeholder="Ejemplo: 1500"
+              />
+            </div>
+            <div class="col">
+              <label for="costo-cartones">Costo de cada carton:</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Ejemplo: 100 "
+                name="costocarton"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <label for="cantidad-cartones">Organiza:</label>
+              <input
+                type="text"
+                class="form-control"
+                name="Organiza"
+                placeholder="Ejemplo: Municipalidad de La Adela"
+              />
+            </div>
+            <div class="col">
+              <label for="costo-cartones">Fecha:</label>
+              <input type="text" class="form-control" name="Fecha" />
+            </div>
+            <div class="col">
+              <label for="costo-cartones">Hora:</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Ejemplo: 9/12/2018"
+                name="Hora"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <label for="cantidad-cartones">Contacto:</label>
+              <input
+                type="text"
+                class="form-control"
+                name="contacto"
+                placeholder="Ejemplo: 2920-445362"
+              />
+            </div>
+            <div class="col">
+              <label for="costo-cartones">Radio:</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Ejemplo: 100 "
+                name="radio"
+              />
+            </div>
+          </div>
+        </div>
+        <hr />
 
-<div class="container">
-		<p>CANTIDAD DE CARTONES A GENERAR:
-			<input type="text" name="cantidaddecartones" />
-		
-		COSTO DE CARTON:
-			<input type="text" name="costocarton" />
-	
-		<hr> 
-		ORGANIZA:
-			<input type="text" name="Organiza" />
-		FECHA:
-			<input type="text" name="Fecha" />
-		HORA:
-            <input type="text" name="Hora" />
-            
-        <hr>
-       
-		CONTACTO:
-            <input type="text" name="contacto" />
-        RADIO:
-			<input type="text" name="radio" />
-		</p>
-		<hr>
-		<p>PREMIO QUINTINA PRIMERA RONDA:
-			<input type="text" name="liniauno"/><br>
-		PREMIO CARTON LLENO PRIMERA RONDA:
-			<input type="text" name="llenouno" />
-		
+        <div class="form-group">
+          <div class="row">
+            <div class="col">
+              <label for="cantidad-cartones">Premio QUINTINA 1ra Ronda:</label>
+              <input
+                type="text"
+                class="form-control"
+                name="liniauno"
+                placeholder="Chango de Mercaderia"
+              />
+            </div>
+            <div class="col">
+              <label for="costo-cartones">Premio CARTON LLENO 1ra Ronda:</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Orden de Compra por $ 10000"
+                name="llenouno"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <label for="cantidad-cartones">Premio QUINTINA 2da Ronda:</label>
+              <input
+                type="text"
+                class="form-control"
+                name="liniados"
+                placeholder="Chango de Mercaderia"
+              />
+            </div>
+            <div class="col">
+              <label for="costo-cartones">Premio CARTON LLENO 2da Ronda:</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Orden de Compra por $ 10000"
+                name="llenodos"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <label for="cantidad-cartones">Premio QUINTINA 3ra Ronda:</label>
+              <input
+                type="text"
+                class="form-control"
+                name="liniatres"
+                placeholder="Chango de Mercaderia"
+              />
+            </div>
+            <div class="col">
+              <label for="costo-cartones">Premio CARTON LLENO 3ra Ronda:</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Orden de Compra por $ 10000"
+                name="llenotres"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col">
+              <label for="cantidad-cartones">Premio QUINTINA 4taa Ronda:</label>
+              <input
+                type="text"
+                class="form-control"
+                name="liniacuatro"
+                placeholder="Chango de Mercaderia"
+              />
+            </div>
+            <div class="col">
+              <label for="costo-cartones">Premio CARTON LLENO 4ta Ronda:</label>
+              <input
+                type="text"
+                class="form-control"
+                placeholder="Orden de Compra por $ 10000"
+                name="llenocuatro"
+              />
+            </div>
+          </div>
 
-		<p>PREMIO QUINTINA SEGUNDA RONDA:
-			<input type="text" name="liniados" /><br>
-		PREMIO CARTON LLENO SEGUNDA RONDA:
-			<input type="text" name="llenodos" /></p>
-		<hr>
-
-		<p>PREMIO QUINTINA TERCERA RONDA:
-			<input type="text" name="liniatres" /><br>
-		PREMIO CARTON LLENO TERCERA RONDA:
-			<input type="text" name="llenotres" /></p>
-		
-
-		<p>PREMIO QUINTINA CUARTA RONDA:
-			<input type="text" name="liniacuatro" /><br>
-		PREMIO CARTON LLENO CUARTA RONDA:
-			<input type="text" name="llenocuatro" /></p>
-		<hr>
-		<input type="submit" class="btn btn-primary btn-lg active" role="button" aria-pressed="true" value="Enviar" />
-		<a href="../index.html" class="btn btn-secondary btn-lg active" role="button" aria-pressed="true">Menu</a>
-</div>
-</form>
-
-
-</body>
+          <hr />
+          <input
+            type="submit"
+            class="btn btn-primary btn-lg active"
+            role="button"
+            aria-pressed="true"
+            value="Enviar"
+          />
+          <a
+            href="../index.html"
+            class="btn btn-secondary btn-lg active"
+            role="button"
+            aria-pressed="true"
+            >Menu</a
+          >
+        </div>
+      </form>
+    </div>
+  </body>
 </html>
