@@ -54,15 +54,16 @@
             }
         return false;
         }
+
         //COMPARACIONES 
 
-        function comparar_fila($carton_lista,$carton_a_ingresar,$fila){
-
-            for($j=0;$j<5;$j++){
-                if($carton_lista[$fila][$j]<>$carton_a_ingresar[$fila][$j]){
-                  return false;
-                } 
-            }
+        function comparar_fila($carton_lista,$carton_a_ingresar,$fila){          
+      
+                for($j=0;$j<5;$j++){
+                    if($carton_lista[$fila][$j]<>$carton_a_ingresar[$fila][$j]){
+                      return false;
+                    } 
+                }                       
         return true;
         }
         
@@ -86,7 +87,7 @@
 
         function generar_lista($cantidad_cartones){ //obtengo un lista, y cada elemento de la lista es un carton
             $lista=array();
-            $lista[0]=0;
+            //$lista[0]=0;
             $carton_a_ingresar=array();
             $k=0;
                    
@@ -94,7 +95,7 @@
                     {
                         $carton_a_ingresar=crear_carton();
 
-                        if(comparar_carton($lista,$carton_a_ingresar)){
+                        if(comparar_carton($lista,$carton_a_ingresar) && ($k<>0)){
                             $carton_a_ingresar=crear_carton();
                         }
                         else{
@@ -108,7 +109,7 @@
 
         function generar_lista_adicionales($cantidad_cartones){ //obtengo un lista, y cada elemento de la lista es un carton
             $lista=array();
-            $lista[0]=0;
+            //$lista[0]=0;
             $carton_a_ingresar=array();
             $k=0;
 
@@ -118,7 +119,7 @@
                     {
                         $carton_a_ingresar=crear_carton();
 
-                        if((comparar_carton($lista,$carton_a_ingresar)) && (comparar_carton($originales,$carton_a_ingresar))){
+                        if(($k<>0)&&(comparar_carton($lista,$carton_a_ingresar)) && (comparar_carton($originales,$carton_a_ingresar))){
                             $carton_a_ingresar=crear_carton();
                         }
                         else{
