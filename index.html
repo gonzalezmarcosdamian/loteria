@@ -1,76 +1,505 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Generador de cartones de loteria</title>
-    <!-- CSS only -->
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-      integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z"
-      crossorigin="anonymous"
-    />
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Generador de Cartones de Lotería</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body class="min-h-screen bg-slate-100 pb-8">
 
-    <!-- JS, Popper.js, and jQuery -->
-    <script
-      src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-      integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-      integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
-      integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
-      crossorigin="anonymous"
-    ></script>
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="./assets/css/global.css"
-      media="screen"
-    />
-  </head>
-  <body style="background-color: rgb(158, 206, 209)">
-    <div class="container inicio">
-      <div class="jumbotron">
-        <h1 class="display-4">Generador de cartones de loteria - Version 1</h1>
-        <p class="lead">
-          Este programa fue desarrollado en La Adela - La Pampa, la idea es de
-          Oscar Vilugron y el codigo fue desarrollado por Damian Gonzalez
-        </p>
-        <hr class="my-4" />
-        <p>Elije una de las siguientes opciones.</p>
+  <!-- Header -->
+  <header class="bg-gradient-to-br from-indigo-950 via-indigo-800 to-indigo-600 text-white px-4 pt-10 pb-8">
+    <div class="max-w-xl mx-auto text-center">
+      <div class="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-white/10 mb-4 text-3xl">
+        🎰
+      </div>
+      <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight mb-1">Lotería — Generador de Cartones</h1>
+      <p class="text-indigo-300 text-sm">By Claudio</p>
+    </div>
+  </header>
 
-        <div class="container">
-          <a
-            href="pages/formulario-originales.html"
-            class="btn btn-primary btn-lg active"
-            role="button"
-            aria-pressed="true"
-          >
-            Cartones originales
-          </a>
-          <a
-            href="pages/formulario-adicionales.html"
-            class="btn btn-warning btn-lg active"
-            role="button"
-            aria-pressed="true"
-          >
-            Cartones adicionales y sorpresas
-          </a>
-          <a
-            href="pages/formulario-radio.html"
-            class="btn btn-success btn-lg active"
-            role="button"
-            aria-pressed="true"
-          >
-            Cartones para loteria radial
-          </a>
+  <!-- Form -->
+  <main class="max-w-xl mx-auto px-4 -mt-4" x-data="app()">
+
+    <!-- Mode selector -->
+    <div class="bg-white rounded-2xl shadow-sm p-1.5 mb-4 flex gap-1">
+      <template x-for="m in modos" :key="m.id">
+        <button type="button"
+                @click="cambiarModo(m.id)"
+                :class="modo === m.id
+                  ? 'bg-indigo-600 text-white shadow-sm'
+                  : 'text-slate-500 hover:text-slate-700 hover:bg-slate-50'"
+                class="flex-1 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-sm font-semibold transition-all duration-150 relative">
+          <span x-text="m.icon" class="text-base"></span>
+          <span x-text="m.label"></span>
+          <template x-if="m.id === 'originales' && countOriginales > 0">
+            <span class="ml-1 px-1.5 py-0.5 rounded-full text-xs font-bold leading-none"
+                  :class="modo === 'originales' ? 'bg-white/20 text-white' : 'bg-indigo-100 text-indigo-700'"
+                  x-text="countOriginales"></span>
+          </template>
+        </button>
+      </template>
+    </div>
+
+    <!-- Aviso sin originales (solo adicionales) -->
+    <div x-show="modo === 'adicionales' && countOriginales === 0"
+         x-transition
+         class="mb-4 bg-amber-50 border border-amber-200 rounded-2xl p-4 flex gap-3 text-sm text-amber-800">
+      <span class="text-xl shrink-0">⚠️</span>
+      <p>No hay cartones originales guardados en este navegador. Generá los originales primero para evitar duplicados.</p>
+    </div>
+
+    <!-- Error -->
+    <div x-show="error" x-transition
+         class="mb-4 bg-red-50 border border-red-200 rounded-2xl p-4 flex gap-3 text-sm text-red-700">
+      <span class="text-xl shrink-0">❌</span>
+      <p x-text="error"></p>
+    </div>
+
+    <form @submit.prevent="generar" novalidate>
+
+      <!-- ── Logo (originales + radio) ──────────────────────────────── -->
+      <div x-show="modo !== 'adicionales'" x-transition class="bg-white rounded-2xl shadow-sm p-5 mb-3">
+        <p class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4">Logo del evento</p>
+        <div x-show="!logoDataUrl" class="flex flex-col gap-1">
+          <label class="form-label">Subir logo <span class="text-slate-400 font-normal">(opcional)</span></label>
+          <input type="file" accept="image/png,image/jpeg,image/gif,image/webp"
+                 @change="handleLogo($event)"
+                 class="block w-full text-sm text-slate-500 file:mr-3 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-100 cursor-pointer">
+          <p class="text-xs text-slate-400">Sin logo se mostrará un monograma por defecto.</p>
+        </div>
+        <div x-show="logoDataUrl" class="flex items-center gap-4">
+          <img :src="logoDataUrl" class="w-16 h-16 object-contain rounded-xl border border-slate-200 bg-slate-50 p-1">
+          <div>
+            <p class="text-sm font-medium text-slate-700">Logo cargado</p>
+            <p class="text-xs text-slate-400 mt-0.5">Se usará en todos los PDFs de este modo.</p>
+            <button type="button" @click="removeLogo()"
+                    class="text-xs text-red-500 hover:text-red-700 font-medium mt-1.5 transition-colors">
+              Quitar logo
+            </button>
+          </div>
         </div>
       </div>
-    </div>
-  </body>
+
+      <!-- ── Datos del evento (originales + radio) ───────────────────── -->
+      <div x-show="modo !== 'adicionales'" x-transition class="bg-white rounded-2xl shadow-sm p-5 mb-3">
+        <p class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4">Datos del evento</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+
+          <div class="sm:col-span-2">
+            <label class="form-label">Organiza</label>
+            <input type="text" name="Organiza"
+                   value="Municipalidad de La Adela"
+                   class="form-input">
+          </div>
+
+          <div x-show="modo === 'originales'" x-transition class="sm:col-span-2">
+            <label class="form-label">Lugar</label>
+            <input type="text" name="Lugar"
+                   value="Club Social y Deportivo"
+                   class="form-input">
+          </div>
+
+          <div>
+            <label class="form-label">Fecha</label>
+            <input type="date" name="Fecha"
+                   :value="hoy"
+                   class="form-input">
+          </div>
+          <div>
+            <label class="form-label">Hora</label>
+            <input type="time" name="Hora"
+                   value="20:30"
+                   class="form-input">
+          </div>
+          <div>
+            <label class="form-label">Costo del cartón</label>
+            <div class="relative">
+              <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-semibold pointer-events-none select-none">$</span>
+              <input type="number" name="costocarton" min="0" step="1"
+                     value="500"
+                     class="form-input pl-7">
+            </div>
+          </div>
+          <div>
+            <label class="form-label">Cantidad de cartones</label>
+            <input type="number" name="cantidaddecartones" min="1" step="1"
+                   value="100"
+                   class="form-input">
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── Contacto radial (solo radio) ───────────────────────────── -->
+      <div x-show="modo === 'radio'" x-transition class="bg-white rounded-2xl shadow-sm p-5 mb-3">
+        <p class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4">Contacto radial</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="form-label">Teléfono / Contacto</label>
+            <input type="text" name="contacto"
+                   placeholder="Ej: 2920-445362"
+                   class="form-input">
+          </div>
+          <div>
+            <label class="form-label">Emisora de radio</label>
+            <input type="text" name="radio"
+                   placeholder="Ej: FM Libertad 95.1"
+                   class="form-input">
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Datos adicionales (solo adicionales) ───────────────────── -->
+      <div x-show="modo === 'adicionales'" x-transition class="bg-white rounded-2xl shadow-sm p-5 mb-3">
+        <p class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4">Datos del cartón</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="sm:col-span-2">
+            <label class="form-label">Tipo de cartón</label>
+            <input type="text" name="tipo"
+                   value="Adicional 1ra Ronda"
+                   class="form-input">
+          </div>
+          <div>
+            <label class="form-label">Cantidad</label>
+            <input type="number" name="cantidad" min="1" step="1"
+                   value="50"
+                   class="form-input">
+          </div>
+          <div>
+            <label class="form-label">Costo</label>
+            <div class="relative">
+              <span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm font-semibold pointer-events-none select-none">$</span>
+              <input type="number" name="costo" min="0" step="1"
+                     value="300"
+                     class="form-input pl-7">
+            </div>
+          </div>
+          <div>
+            <label class="form-label">Fecha</label>
+            <input type="date" name="Fecha_ad"
+                   :value="hoy"
+                   class="form-input">
+          </div>
+          <div>
+            <label class="form-label">Hora</label>
+            <input type="time" name="Hora_ad"
+                   value="20:30"
+                   class="form-input">
+          </div>
+        </div>
+      </div>
+
+      <!-- ── Premios (originales + radio) ───────────────────────────── -->
+      <div x-show="modo !== 'adicionales'" x-transition class="bg-white rounded-2xl shadow-sm p-5 mb-4">
+        <p class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4">Premios por ronda</p>
+        <div class="flex flex-col gap-2">
+          <template x-for="(r, i) in rondas" :key="i">
+            <div :class="r.bg + ' ' + r.border" class="border-l-4 rounded-r-xl p-3.5">
+              <p class="text-xs font-bold mb-2.5" :class="r.color" x-text="'Ronda ' + (i+1)"></p>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <div>
+                  <label class="form-label-sm">Premio Quintina</label>
+                  <input type="text" :name="'linia' + r.sufijo"
+                         :value="r.quintina"
+                         class="form-input-sm">
+                </div>
+                <div>
+                  <label class="form-label-sm">Premio Cartón Lleno</label>
+                  <input type="text" :name="'lleno' + r.sufijo"
+                         :value="r.lleno"
+                         class="form-input-sm">
+                </div>
+              </div>
+            </div>
+          </template>
+        </div>
+      </div>
+
+      <!-- ── Botón generar ───────────────────────────────────────────── -->
+      <button type="submit" :disabled="loading"
+              :class="modoActual.btnClass"
+              class="w-full text-white font-bold py-4 rounded-2xl transition-all flex items-center justify-center gap-2 text-base shadow-md disabled:opacity-60">
+        <template x-if="!loading">
+          <span class="flex items-center gap-2">
+            <span x-text="modoActual.icon"></span>
+            <span x-text="'Generar PDF — ' + modoActual.label"></span>
+          </span>
+        </template>
+        <template x-if="loading">
+          <span class="flex items-center gap-2">
+            <svg class="animate-spin w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
+            </svg>
+            <span x-text="progreso"></span>
+          </span>
+        </template>
+      </button>
+
+    </form>
+
+    <!-- Footer -->
+    <p class="text-center text-slate-400 text-xs mt-8">
+      Generador de Cartones de Lotería &mdash; La Adela, La Pampa
+    </p>
+
+  </main>
+
+  <!-- Estilos inline de clases reutilizables (Tailwind no soporta @apply sin build) -->
+  <style>
+    .form-label    { display:block; font-size:.8125rem; font-weight:500; color:#334155; margin-bottom:.25rem }
+    .form-label    span { color:#ef4444 }
+    .form-label-sm { display:block; font-size:.75rem;   font-weight:500; color:#475569; margin-bottom:.25rem }
+    .form-input    { width:100%; border-radius:.75rem; border:1px solid #e2e8f0; padding:.625rem 1rem; font-size:.875rem; outline:none; transition:box-shadow .15s,border-color .15s; background:#fff }
+    .form-input:focus    { border-color:#6366f1; box-shadow:0 0 0 3px rgba(99,102,241,.15) }
+    .form-input-sm { width:100%; border-radius:.5rem;  border:1px solid #e2e8f0; padding:.5rem .75rem;  font-size:.875rem; outline:none; transition:box-shadow .15s,border-color .15s; background:#fff }
+    .form-input-sm:focus { border-color:#6366f1; box-shadow:0 0 0 3px rgba(99,102,241,.12) }
+    input[type="date"], input[type="time"] { color-scheme: light }
+  </style>
+
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="js/card-generator.js"></script>
+  <script src="js/pdf-builder.js"></script>
+  <script>
+    function app() {
+      return {
+        modo:         'originales',
+        loading:      false,
+        error:        '',
+        progreso:     '',
+        countOriginales: 0,
+        logoDataUrl:  null,
+        logoFormat:   null,
+        hoy:          new Date().toISOString().slice(0, 10), // YYYY-MM-DD
+
+        modos: [
+          { id: 'originales', label: 'Originales', icon: '🎟️',
+            btnClass: 'bg-indigo-600 hover:bg-indigo-700' },
+          { id: 'adicionales', label: 'Adicionales', icon: '✨',
+            btnClass: 'bg-amber-500 hover:bg-amber-600' },
+          { id: 'radio', label: 'Radial', icon: '📻',
+            btnClass: 'bg-emerald-600 hover:bg-emerald-700' },
+        ],
+
+        rondas: [
+          { sufijo: 'uno',    bg: 'bg-indigo-50',  border: 'border-indigo-400', color: 'text-indigo-700',
+            quintina: 'Chango de mercadería',     lleno: 'Orden de compra $50.000' },
+          { sufijo: 'dos',    bg: 'bg-violet-50',  border: 'border-violet-400', color: 'text-violet-700',
+            quintina: 'Smart TV 40"',             lleno: 'Moto 0 km' },
+          { sufijo: 'tres',   bg: 'bg-sky-50',     border: 'border-sky-400',    color: 'text-sky-700',
+            quintina: 'Bicicleta',                lleno: 'Viaje turístico' },
+          { sufijo: 'cuatro', bg: 'bg-emerald-50', border: 'border-emerald-400',color: 'text-emerald-700',
+            quintina: 'Canasta familiar',         lleno: 'Automóvil 0 km' },
+        ],
+
+        get modoActual() {
+          return this.modos.find(m => m.id === this.modo);
+        },
+
+        init() {
+          this.countOriginales = countOriginals();
+          // Recuperar logo guardado
+          try {
+            const savedLogo = localStorage.getItem('loteria_logo');
+            if (savedLogo) {
+              const { data, format } = JSON.parse(savedLogo);
+              this.logoDataUrl = data;
+              this.logoFormat  = format;
+            }
+          } catch (_) {}
+        },
+
+        cambiarModo(nuevo) {
+          this.modo  = nuevo;
+          this.error = '';
+        },
+
+        handleLogo(event) {
+          const file = event.target.files[0];
+          if (!file) return;
+          const fmt = file.type.split('/')[1]?.toUpperCase() || 'PNG';
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            this.logoDataUrl = e.target.result;
+            this.logoFormat  = fmt;
+            try {
+              localStorage.setItem('loteria_logo', JSON.stringify({ data: e.target.result, format: fmt }));
+            } catch (_) {}
+          };
+          reader.readAsDataURL(file);
+        },
+
+        removeLogo() {
+          this.logoDataUrl = null;
+          this.logoFormat  = null;
+          try { localStorage.removeItem('loteria_logo'); } catch (_) {}
+        },
+
+        // ── Validación manual (evita problemas con required en campos ocultos) ──
+        validar(d) {
+          const req = (v, label) => { if (!v?.trim()) throw new Error(`"${label}" es obligatorio.`); };
+          const num = (v, label) => {
+            if (!v || isNaN(v) || parseInt(v) <= 0)
+              throw new Error(`"${label}" debe ser un número mayor a 0.`);
+          };
+
+          if (this.modo === 'originales') {
+            req(d.Organiza,             'Organiza');
+            req(d.Lugar,                'Lugar');
+            req(d.Fecha,                'Fecha');
+            req(d.Hora,                 'Hora');
+            req(d.costocarton,          'Costo del cartón');
+            num(d.cantidaddecartones,   'Cantidad de cartones');
+            ['uno','dos','tres','cuatro'].forEach((s, i) => {
+              req(d['linia' + s], `Quintina Ronda ${i + 1}`);
+              req(d['lleno' + s], `Cartón Lleno Ronda ${i + 1}`);
+            });
+          }
+
+          if (this.modo === 'adicionales') {
+            req(d.tipo,    'Tipo de cartón');
+            num(d.cantidad,'Cantidad');
+            req(d.costo,   'Costo');
+            req(d.Fecha_ad,'Fecha');
+            req(d.Hora_ad, 'Hora');
+          }
+
+          if (this.modo === 'radio') {
+            req(d.Organiza,           'Organiza');
+            req(d.Fecha,              'Fecha');
+            req(d.Hora,               'Hora');
+            req(d.costocarton,        'Costo del cartón');
+            num(d.cantidaddecartones, 'Cantidad de cartones');
+            req(d.contacto,           'Contacto');
+            req(d.radio,              'Radio');
+            ['uno','dos','tres','cuatro'].forEach((s, i) => {
+              req(d['linia' + s], `Quintina Ronda ${i + 1}`);
+              req(d['lleno' + s], `Cartón Lleno Ronda ${i + 1}`);
+            });
+          }
+        },
+
+        // ── Generación principal ───────────────────────────────────────────────
+        async generar(e) {
+          this.error = '';
+          const d = Object.fromEntries(new FormData(e.target));
+
+          try { this.validar(d); }
+          catch (err) { this.error = err.message; return; }
+
+          // Confirmar sobreescritura de originales
+          if (this.modo === 'originales' && this.countOriginales > 0) {
+            const ok = confirm(
+              `Ya hay ${this.countOriginales} cartones originales guardados en este navegador.\n` +
+              '¿Reemplazarlos con los nuevos cartones?'
+            );
+            if (!ok) return;
+          }
+
+          this.loading = true;
+          await tick();
+
+          const logo = this.logoDataUrl
+            ? { data: this.logoDataUrl, format: this.logoFormat }
+            : null;
+
+          try {
+            if (this.modo === 'originales') {
+              const count  = parseInt(d.cantidaddecartones);
+              const config = {
+                organiza:    d.Organiza,
+                lugar:       d.Lugar,
+                fecha:       fmtDate(d.Fecha),
+                hora:        d.Hora,
+                costocarton: fmtMoney(d.costocarton),
+                premios:     premiosDesde(d),
+              };
+              this.progreso = `Generando ${count} cartones únicos…`;
+              await tick();
+              const cards = generateList(count);
+              saveOriginals(cards);
+              this.countOriginales = cards.length;
+              this.progreso = `Construyendo PDF (${count} páginas)…`;
+              await tick();
+              buildOriginalesPdf(cards, config, logo);
+            }
+
+            else if (this.modo === 'adicionales') {
+              const count     = parseInt(d.cantidad);
+              const originals = loadOriginals();
+              const config    = {
+                tipo:  d.tipo,
+                costo: fmtMoney(d.costo),
+                fecha: fmtDate(d.Fecha_ad),
+                hora:  d.Hora_ad,
+              };
+              this.progreso = `Generando ${count} cartones únicos…`;
+              await tick();
+              const cards = generateList(count, originals);
+              this.progreso = 'Construyendo PDF…';
+              await tick();
+              buildAdicionalesPdf(cards, config, logo);
+            }
+
+            else if (this.modo === 'radio') {
+              const count  = parseInt(d.cantidaddecartones);
+              const config = {
+                organiza:    d.Organiza,
+                fecha:       fmtDate(d.Fecha),
+                hora:        d.Hora,
+                costocarton: fmtMoney(d.costocarton),
+                contacto:    d.contacto,
+                radio:       d.radio,
+                premios:     premiosDesde(d),
+              };
+              this.progreso = `Generando ${count} cartones únicos…`;
+              await tick();
+              const cards = generateList(count);
+              this.progreso = `Construyendo PDF (${count} páginas)…`;
+              await tick();
+              buildRadioPdf(cards, config, logo);
+            }
+
+          } catch (err) {
+            this.error = 'Error inesperado: ' + err.message;
+          } finally {
+            this.loading  = false;
+            this.progreso = '';
+          }
+        },
+      };
+
+      // ── Helpers ──────────────────────────────────────────────────────────────
+
+      /** Cede el control al browser para que Alpine.js actualice el DOM */
+      function tick() { return new Promise(r => setTimeout(r, 40)); }
+
+      /** Convierte YYYY-MM-DD (input date) a DD/MM/YYYY para el PDF */
+      function fmtDate(iso) {
+        if (!iso || !iso.includes('-')) return iso;
+        const [y, m, d] = iso.split('-');
+        return `${d}/${m}/${y}`;
+      }
+
+      /** Formatea un número como moneda argentina */
+      function fmtMoney(val) {
+        const n = parseFloat(val);
+        if (isNaN(n)) return val;
+        return '$ ' + n.toLocaleString('es-AR');
+      }
+
+      /** Arma el array de premios desde FormData */
+      function premiosDesde(d) {
+        return ['uno','dos','tres','cuatro'].map(s => ({
+          quintina: d['linia' + s] || '',
+          lleno:    d['lleno' + s] || '',
+        }));
+      }
+    }
+  </script>
+</body>
 </html>

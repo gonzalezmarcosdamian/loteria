@@ -1,199 +1,202 @@
-<html>
-  <head>
-    <meta charset="utf8" />
-    <title>Formulario HTML para programa de LOTERIA</title>
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Lotería Radial — Lotería</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+</head>
+<body class="min-h-screen bg-slate-100">
 
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
-      crossorigin="anonymous"
-    />
-  </head>
-  <body style="background-color: rgb(191, 206, 209)">
-    <div class="container">
-      <h1>Generador de cartones para loteria Radial - V1</h1>
-      <h2>Ingrese Datos:</h2>
+  <header class="bg-gradient-to-r from-emerald-800 to-emerald-500 text-white px-4 py-5">
+    <div class="max-w-2xl mx-auto flex items-center gap-4">
+      <a href="../index.html" class="flex items-center gap-1 text-emerald-100 hover:text-white text-sm transition-colors">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+        Menú
+      </a>
+      <div>
+        <h1 class="font-bold text-lg leading-tight">📻 Lotería Radial</h1>
+        <p class="text-emerald-100 text-xs">Cartones para sorteos transmitidos por radio</p>
+      </div>
     </div>
-    <hr />
-    <!--FORMULARIO-->
-    <div class="container">
-      <form action="../radio_v1.php" method="post">
-        <div class="form-group">
-          <div class="row">
-            <div class="col">
-              <label for="cantidad-cartones"
-                >Cantidad de cartones a generar:</label
-              >
-              <input
-                type="text"
-                class="form-control"
-                name="cantidaddecartones"
-                placeholder="Ejemplo: 1500"
-              />
-            </div>
-            <div class="col">
-              <label for="costo-cartones">Costo de cada carton:</label>
-              <input
-                type="text"
-                class="form-control"
-                placeholder="Ejemplo: 100 "
-                name="costocarton"
-              />
-            </div>
+  </header>
+
+  <main class="max-w-2xl mx-auto px-4 py-6" x-data="vm()">
+
+    <!-- Error -->
+    <div x-show="error" x-transition
+         class="mb-4 bg-red-50 border border-red-200 text-red-700 rounded-2xl p-4 text-sm flex gap-3">
+      <span class="text-xl shrink-0">⚠️</span>
+      <p x-text="error"></p>
+    </div>
+
+    <form @submit.prevent="generar" novalidate>
+
+      <!-- Datos del evento -->
+      <div class="bg-white rounded-2xl shadow-sm p-5 mb-4">
+        <p class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4">Datos del evento</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+          <div class="sm:col-span-2">
+            <label class="block text-sm font-medium text-slate-700 mb-1">Organiza <span class="text-red-500">*</span></label>
+            <input type="text" name="Organiza" required placeholder="Ej: Municipalidad de La Adela"
+                   class="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
           </div>
-          <div class="row">
-            <div class="col">
-              <label for="cantidad-cartones">Organiza:</label>
-              <input
-                type="text"
-                class="form-control"
-                name="Organiza"
-                placeholder="Ejemplo: Municipalidad de La Adela"
-              />
-            </div>
-            <div class="col">
-              <label for="costo-cartones">Fecha:</label>
-              <input
-                type="text"
-                class="form-control"
-                placeholder="Ejemplo: 9/12/2018 "
-                name="Fecha"
-              />
-            </div>
-            <div class="col">
-              <label for="costo-cartones">Hora:</label>
-              <input
-                type="text"
-                class="form-control"
-                placeholder="Ejemplo: 18:00
-                "
-                name="Hora"
-              />
-            </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Fecha <span class="text-red-500">*</span></label>
+            <input type="text" name="Fecha" required placeholder="Ej: 15/06/2025"
+                   class="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
           </div>
-          <div class="row">
-            <div class="col">
-              <label for="cantidad-cartones">Contacto:</label>
-              <input
-                type="text"
-                class="form-control"
-                name="contacto"
-                placeholder="Ejemplo: 2920-445362"
-              />
-            </div>
-            <div class="col">
-              <label for="costo-cartones">Radio:</label>
-              <input
-                type="text"
-                class="form-control"
-                placeholder="Ejemplo: FM Libertad 95.1 "
-                name="radio"
-              />
-            </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Hora <span class="text-red-500">*</span></label>
+            <input type="text" name="Hora" required placeholder="Ej: 20:30"
+                   class="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Costo del cartón <span class="text-red-500">*</span></label>
+            <input type="text" name="costocarton" required placeholder="Ej: 500"
+                   class="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Cantidad de cartones <span class="text-red-500">*</span></label>
+            <input type="number" name="cantidaddecartones" required min="1" placeholder="Ej: 500"
+                   class="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Datos radiales -->
+      <div class="bg-white rounded-2xl shadow-sm p-5 mb-4">
+        <p class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4">Contacto radial</p>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Teléfono / Contacto <span class="text-red-500">*</span></label>
+            <input type="text" name="contacto" required placeholder="Ej: 2920-445362"
+                   class="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-slate-700 mb-1">Emisora de radio <span class="text-red-500">*</span></label>
+            <input type="text" name="radio" required placeholder="Ej: FM Libertad 95.1"
+                   class="w-full rounded-xl border border-slate-200 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500">
           </div>
         </div>
-        <hr />
+      </div>
 
-        <div class="form-group">
-          <div class="row">
-            <div class="col">
-              <label for="cantidad-cartones">Premio QUINTINA 1ra Ronda:</label>
-              <input
-                type="text"
-                class="form-control"
-                name="liniauno"
-                placeholder="Chango de Mercaderia"
-              />
-            </div>
-            <div class="col">
-              <label for="costo-cartones">Premio CARTON LLENO 1ra Ronda:</label>
-              <input
-                type="text"
-                class="form-control"
-                placeholder="Orden de Compra por $ 10000"
-                name="llenouno"
-              />
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <label for="cantidad-cartones">Premio QUINTINA 2da Ronda:</label>
-              <input
-                type="text"
-                class="form-control"
-                name="liniados"
-                placeholder="Chango de Mercaderia"
-              />
-            </div>
-            <div class="col">
-              <label for="costo-cartones">Premio CARTON LLENO 2da Ronda:</label>
-              <input
-                type="text"
-                class="form-control"
-                placeholder="Orden de Compra por $ 10000"
-                name="llenodos"
-              />
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <label for="cantidad-cartones">Premio QUINTINA 3ra Ronda:</label>
-              <input
-                type="text"
-                class="form-control"
-                name="liniatres"
-                placeholder="Chango de Mercaderia"
-              />
-            </div>
-            <div class="col">
-              <label for="costo-cartones">Premio CARTON LLENO 3ra Ronda:</label>
-              <input
-                type="text"
-                class="form-control"
-                placeholder="Orden de Compra por $ 10000"
-                name="llenotres"
-              />
-            </div>
-          </div>
-          <div class="row">
-            <div class="col">
-              <label for="cantidad-cartones">Premio QUINTINA 4taa Ronda:</label>
-              <input
-                type="text"
-                class="form-control"
-                name="liniacuatro"
-                placeholder="Chango de Mercaderia"
-              />
-            </div>
-            <div class="col">
-              <label for="costo-cartones">Premio CARTON LLENO 4ta Ronda:</label>
-              <input
-                type="text"
-                class="form-control"
-                placeholder="Orden de Compra por $ 10000"
-                name="llenocuatro"
-              />
-            </div>
-          </div>
+      <!-- Premios -->
+      <div class="bg-white rounded-2xl shadow-sm p-5 mb-6">
+        <p class="text-xs font-bold uppercase tracking-widest text-slate-400 mb-4">Premios por ronda</p>
+        <div class="flex flex-col gap-3">
 
-          <hr />
-          <input
-            type="submit"
-            class="btn btn-primary btn-lg active"
-            role="button"
-            aria-pressed="true"
-            value="Enviar"
-          />
-          <a
-            href="../index.html"
-            class="btn btn-secondary btn-lg active"
-            role="button"
-            aria-pressed="true"
-            >Menu</a
-          >
+          <template x-for="(r, i) in rondas" :key="i">
+            <div :class="r.style" class="rounded-r-xl p-4 border-l-4">
+              <p class="text-sm font-semibold mb-3" :class="r.titleColor" x-text="'Ronda ' + (i+1)"></p>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-xs font-medium text-slate-600 mb-1">Premio Quintina <span class="text-red-500">*</span></label>
+                  <input type="text" :name="'linia' + r.sufijo" required placeholder="Ej: Chango de mercadería"
+                         class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2" :class="r.ring">
+                </div>
+                <div>
+                  <label class="block text-xs font-medium text-slate-600 mb-1">Premio Cartón Lleno <span class="text-red-500">*</span></label>
+                  <input type="text" :name="'lleno' + r.sufijo" required placeholder="Ej: Orden de compra $50.000"
+                         class="w-full rounded-lg border border-slate-200 px-3 py-2 text-sm focus:outline-none focus:ring-2" :class="r.ring">
+                </div>
+              </div>
+            </div>
+          </template>
+
         </div>
-      </form>
-    </div>
-  </body>
+      </div>
+
+      <!-- Botón -->
+      <button type="submit" :disabled="loading"
+              class="w-full bg-emerald-600 hover:bg-emerald-700 disabled:bg-emerald-400 text-white font-semibold py-3.5 rounded-2xl transition-colors flex items-center justify-center gap-2 text-base shadow-sm">
+        <template x-if="!loading"><span>📻 Generar PDF</span></template>
+        <template x-if="loading">
+          <span class="flex items-center gap-2">
+            <svg class="animate-spin w-5 h-5" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"/>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
+            </svg>
+            <span x-text="progreso || 'Generando...'"></span>
+          </span>
+        </template>
+      </button>
+
+    </form>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="../js/card-generator.js"></script>
+  <script src="../js/pdf-builder.js"></script>
+  <script>
+    function vm() {
+      return {
+        loading:  false,
+        error:    '',
+        progreso: '',
+
+        rondas: [
+          { sufijo: 'uno',    style: 'border-indigo-400 bg-indigo-50',   titleColor: 'text-indigo-700',  ring: 'focus:ring-indigo-400'  },
+          { sufijo: 'dos',    style: 'border-violet-400 bg-violet-50',   titleColor: 'text-violet-700',  ring: 'focus:ring-violet-400'  },
+          { sufijo: 'tres',   style: 'border-sky-400    bg-sky-50',      titleColor: 'text-sky-700',     ring: 'focus:ring-sky-400'     },
+          { sufijo: 'cuatro', style: 'border-emerald-400 bg-emerald-50', titleColor: 'text-emerald-700', ring: 'focus:ring-emerald-400' },
+        ],
+
+        async generar(e) {
+          const form = e.target;
+          this.error = '';
+
+          if (!form.checkValidity()) { form.reportValidity(); return; }
+
+          const d     = Object.fromEntries(new FormData(form));
+          const count = parseInt(d.cantidaddecartones);
+
+          if (!count || count <= 0) { this.error = 'La cantidad debe ser un número positivo.'; return; }
+
+          this.loading  = true;
+          this.progreso = 'Generando ' + count + ' cartones...';
+          await new Promise(r => setTimeout(r, 60));
+
+          try {
+            const config = {
+              organiza:    d.Organiza,
+              fecha:       d.Fecha,
+              hora:        d.Hora,
+              costocarton: d.costocarton,
+              contacto:    d.contacto,
+              radio:       d.radio,
+              premios: [
+                { quintina: d.liniauno,    lleno: d.llenouno    },
+                { quintina: d.liniados,    lleno: d.llenodos    },
+                { quintina: d.liniatres,   lleno: d.llenotres   },
+                { quintina: d.liniacuatro, lleno: d.llenocuatro },
+              ],
+            };
+
+            this.progreso = 'Generando cartones únicos...';
+            await new Promise(r => setTimeout(r, 20));
+
+            const cards = generateList(count);
+
+            this.progreso = 'Construyendo PDF...';
+            await new Promise(r => setTimeout(r, 20));
+
+            buildRadioPdf(cards, config);
+
+          } catch (err) {
+            this.error = 'Error: ' + err.message;
+          } finally {
+            this.loading  = false;
+            this.progreso = '';
+          }
+        },
+      };
+    }
+  </script>
+</body>
 </html>

@@ -1,68 +1,30 @@
 <?php
-    //-----------------------------------------------------------------------------------
-    //    PROGRAMA LOTERIA ADICIONALES y SORPRESAS
-    //-----------------------------------------------------------------------------------
-try{
-    require('fpdf.php');
-    require('functions.php');
 
-    $f= new FPDF();
-    $f->AddPage('PORTRAIT','A4'); //orientacion y tamanio
+declare(strict_types=1);
 
-    class pdf extends FPDF
-	{
-		    public function Header()
-		{	
-    		// Select Arial bold 15
-    		$this->SetFont('Arial','B',12);
+require_once __DIR__ . '/src/helpers.php';
+require_once __DIR__ . '/src/Card.php';
+require_once __DIR__ . '/src/CardGenerator.php';
+require_once __DIR__ . '/src/CardStorage.php';
+require_once __DIR__ . '/src/Validator.php';
+require_once __DIR__ . '/src/PdfGenerator.php';
 
-            //Varibles a ingresar
-            //$cartonesadicionales='adicionales o sorpresa';
-            
-            //$this->Cell(10,10,'Tipo de carton: '.$cartonesadicionales,0,0,'L');
-    		// Line break
-    		$this->Ln();
-		    }
-		    public function Footer()
-			{
-    		// Go to 1.5 cm from bottom
-    		$this->SetY(-15);
-    		// Select Arial italic 8
-    		$this->SetFont('Arial','B',10);
-            $this->SetFont('');
-    		// Print centered page number
-            //$this->Cell(80);
-            //$this->Cell(5,5,'One soluciones informaticas ',0,0,'L');
-            $this->Ln();
-            //.$this->PageNo()
-			}
-			//Dejamos de ejemplo como concatenar el nro de pagina
-	   
-        }
-              
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    header('Location: pages/formulario-adicionales.html');
+    exit;
+}
 
-        //PDF INICIALIZACION
-        
-        $f=new pdf('P','mm','A4');
-        $f->AddPage('PORTRAIT','A4');
-        $f->SetFont('Arial','B',10);
-        $f->SetFont(''); 
+try {
+    $config    = Validator::adicionales($_POST);
+    $originals = CardStorage::load(__DIR__ . '/txt/originales.txt');
 
-       // $lista_originales=leer_originales();
+    $generator = new CardGenerator();
+    $cards     = $generator->generateAdditionals($config['cantidad'], $originals);
 
-        //Aca pedire que elija entre 3 o 4 rondas, y cantidad total de cartones
-        $cantidad = $_POST['cantidad'];
-        $ronda=1; //RONDAS
+    (new PdfGenerator())->renderAdicionales($cards, $config);
 
-        $lista_cartones_adicionales=generar_lista_adicionales($cantidad);
-       
-
-        imprimir_lista_adicionales($cantidad,$ronda,$lista_cartones_adicionales,$f);
-
-	$f->output();
-	}
-	//fin try
-	catch (Exception $e) {
-        echo 'Excepción capturada: ',  $e->getMessage(), "\n";
-        }
- ?>
+} catch (InvalidArgumentException $e) {
+    renderError($e->getMessage(), 'pages/formulario-adicionales.html');
+} catch (Throwable $e) {
+    renderError('Error inesperado: ' . $e->getMessage(), 'pages/formulario-adicionales.html');
+}
